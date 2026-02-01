@@ -1,0 +1,43 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Deploy - mikr.us
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Create .env file
+        run: echo "${{ vars.ENV_FILE }}" > .env
+      - name: Append secrets to .env file
+        run: |
+          echo "MONGO_HOST=${{ secrets.MONGO_HOST }}" >> .env
+          echo "MONGO_DATABASE=${{ secrets.MONGO_DATABASE }}" >> .env
+          echo "MONGO_COLLECTION=${{ secrets.MONGO_COLLECTION }}" >> .env
+          echo "MONGO_USER=${{ secrets.MONGO_USER }}" >> .env
+          echo "MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}" >> .env
+          echo "MONGO_AUTH_SOURCE=${{ secrets.MONGO_AUTH_SOURCE }}" >> .env
+      - name: Copy application to server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SSH_SERVER }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: ./*
+          target: app/zerion-checker
+          debug: true
+      - name: Install app on server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_SERVER }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd app/zerion-checker
+            npm ci && npx playwright install --with-deps chromium --only-shell

@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Docker Compose Build",
+                "type": "shell",
+                "command": "docker-compose build",
+                "group": "build",
+                "presentation": {
+                    "reveal": "always",
+                    "panel": "new"
+                }
+            }
+        ]
+    },
+    "configurations": [
+        {
+            "name": "Run with LOCAL database",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": "pnpm",
+            "runtimeArgs": [
+                "run", "start"
+            ],
+        },
+        {
+            "name": "Run with DOCKER database",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "Docker Compose Build",
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": "docker-compose",
+            "runtimeArgs": [
+                "up"
+            ],
+        }
+    ]
+}

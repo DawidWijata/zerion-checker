@@ -1,0 +1,13 @@
+# Node.js
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Environment files
+.env
+.env.development
+
+# Additional files
+data/
+.DS_Store

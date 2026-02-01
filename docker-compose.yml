@@ -1,0 +1,29 @@
+services:
+  zerion-mongo:
+    image: mongo:6.0.27
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=test
+      - MONGO_INITDB_ROOT_PASSWORD=zaq1@WSX
+      - MONGO_INITDB_DATABASE=testdb
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - zerion-checker
+
+  zerion-crawler:
+    build:
+       context: .
+       dockerfile: ./Dockerfile
+    depends_on:
+      - zerion-mongo
+    networks:
+      - zerion-checker
+
+networks:
+  zerion-checker:
+    driver: bridge
+
