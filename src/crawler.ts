@@ -20,7 +20,7 @@ export class ZerionApiClient {
             const button = page.getByText('Oglądaj').nth(1);
             await button.click();
 
-            const isIframeLoaded = await page.locator('iframe').count() > 0;
+            const isIframeLoaded = await page.getByText('Serwery zajęte!!!').count() === 0;
             await browser.close();
 
             return isIframeLoaded;
