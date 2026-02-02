@@ -20,10 +20,13 @@ export class ZerionApiClient {
             const button = page.getByText('Oglądaj').nth(1);
             await button.click();
 
-            const isIframeLoaded = await page.getByText('Serwery zajęte!!!').count() === 0;
+            const isVideoVisible = await page
+                .locator('.player-plimit')
+                .isHidden();
+
             await browser.close();
 
-            return isIframeLoaded;
+            return isVideoVisible;
         } catch (error) {
             this.logger.error(error);
         }
