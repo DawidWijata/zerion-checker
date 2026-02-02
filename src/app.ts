@@ -3,6 +3,6 @@ import { Logger } from './logger.ts';
 import * as Utils from './utils.ts';
 
 const api = new ZerionApiClient(process.env.ZERION_CHECK_LINK!, Logger);
-const [duration, isAvailable] = await Utils.measureTimeAsync(() => api.checkAvailability());
+const [duration, result] = await Utils.measureTimeAsync(() => api.checkAvailability());
 
-Logger.info({ isAvailable, duration });
+Logger.info({ ...result, duration });

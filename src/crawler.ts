@@ -10,7 +10,7 @@ export class ZerionApiClient {
         this.logger = logger;
     }
 
-    public async checkAvailability(): Promise<boolean> {
+    public async checkAvailability(): Promise<Record<string, unknown>> {
         const browser = await chromium.launch();
         const page = await browser.newPage();
 
@@ -22,17 +22,20 @@ export class ZerionApiClient {
 
             await page.waitForSelector('.player-plimit');
 
-            const isVideoVisible = await page
-                .locator('.player-plimit')
-                .isHidden();
+            const isVideoVisible = await page.locator('.player-plimit').isHidden();
 
-            await browser.close();
-
-            return isVideoVisible;
+            return { isAvailable: isVideoVisible };
         } catch (error) {
+            if (error instanceof Error && error.name === 'TimeoutError') {
+                this.logger.warn({ isTimeout: true });
+                return { isAvailable: null };
+            }
+
             this.logger.error(error);
+        } finally {
+            await browser.close();
         }
 
-        return false;
+        return { isAvailable: false };
     }
 }
