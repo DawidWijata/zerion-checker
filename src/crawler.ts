@@ -20,6 +20,8 @@ export class ZerionApiClient {
             const button = page.getByText('Oglądaj').nth(1);
             await button.click();
 
+            await page.waitForSelector('.player-plimit');
+
             const isVideoVisible = await page
                 .locator('.player-plimit')
                 .isHidden();
