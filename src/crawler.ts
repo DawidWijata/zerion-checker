@@ -25,10 +25,10 @@ export class ZerionApiClient {
             const button = page.getByText('Oglądaj').nth(1);
             await button.click();
 
-            await page.waitForTimeout(randomDelay(600, 1300));
+            await page.waitForSelector('.player-plimit');
 
             const isVideoAvailable = await page
-                .locator('.innerPlimit', { hasText: 'Wykup premium, aby uzyskać dostęp!' })
+                .locator('.player-plimit', { hasText: 'Wykup premium, aby uzyskać dostęp!' })
                 .count() === 0;
 
             return { isAvailable: isVideoAvailable };
