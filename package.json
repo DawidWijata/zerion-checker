@@ -22,6 +22,6 @@
   "dependencies": {
     "pino": "^10.3.0",
     "pino-mongodb": "^5.0.0",
-    "playwright": "^1.57.0"
+    "playwright": "npm:rebrowser-playwright@^1.52.0"
   }
 }
