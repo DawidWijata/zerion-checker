@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm ci
-RUN npx playwright install --with-deps chromium
+RUN npx playwright install --with-deps firefox
 RUN apt-get install -y xauth
 
 COPY . .

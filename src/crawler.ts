@@ -1,4 +1,4 @@
-import { chromium } from "playwright";
+import { firefox } from "playwright";
 import type { Logger } from "pino";
 import { randomDelay } from "./utils.ts";
 
@@ -47,7 +47,7 @@ export class ZerionApiClient {
     }
 
     private async getContext() {
-        const browser = await chromium.launch({ headless: false });
+        const browser = await firefox.launch({ headless: false });
         const context = await browser.newContext({
             viewport: {
                 width: 1280 + Math.floor(Math.random() * 100),
