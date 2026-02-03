@@ -40,4 +40,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd app/zerion-checker
-            npm ci && npx playwright install chromium
+            npm ci && npx playwright install --with-deps chromium
