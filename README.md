@@ -3,7 +3,7 @@
 [!CAUTION]
 **For now, the project is abandoned**
 
-Zerion Checker is a simple tool that checks if a Zerion (https://zerion.cc) media website is currently blocked for non-premium users. The tool was meant to help in planning movie dates with my wife :smile:.
+Zerion Checker is a simple tool that checks if a Zerion (https://zerion.cc) media website is currently blocked for non-premium users. The tool was meant to help in planning movie dates with my wife :smile:
 
 Checker bot logs the result to MongoDB and can be used to monitor the availability of a website, e.g. with a Grafana dashboard. You can customize the sample rate simply by setting a CRON job in your production environment.
 
