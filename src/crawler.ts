@@ -1,4 +1,4 @@
-import { firefox } from "playwright";
+import { firefox, type Page } from "playwright";
 import type { Logger } from "pino";
 import { random } from "./utils.ts";
 
@@ -12,36 +12,32 @@ export class ZerionApiClient {
     }
 
     public async checkAvailability(): Promise<Record<string, unknown>> {
-        const isCloudflareBypassOn = process.env.CLOUDFLARE === 'true';
-        const context = isCloudflareBypassOn
-            ? await this.getCloudflareProtectedContext()
-            : await this.getContext();
-
+        const context = await this.getContext();
         const page = await context.newPage();
 
         try {
-            await page.goto(this.link, {
-                waitUntil: 'domcontentloaded',
-            });
-
-            if (isCloudflareBypassOn) {
-                await page.waitForTimeout(random(1000, 3000));
-            }
+            await this.cloudflareDelay(page);
+            await page.goto(this.link, { waitUntil: 'domcontentloaded' });
+            await this.cloudflareDelay(page);
 
             const button = page.getByText('Oglądaj').nth(1);
-            await button.click();
 
+            await button.click();
             await page.waitForTimeout(random(2000, 4000));
 
-            const isVideoAvailable = await page
-                .locator('.player-plimit', { hasText: 'Wykup premium, aby uzyskać dostęp!' })
-                .count() === 0;
+            const isCloudflareTriggered = await page
+                .locator('.player-captcha')
+                .isVisible();
 
-            return { isAvailable: isVideoAvailable };
+            const isAvailable = await page
+                .locator('.player-plimit', { hasText: 'Wykup premium, aby uzyskać dostęp!' })
+                .isHidden();
+
+            return { isAvailable, isCloudflareTriggered };
         } catch (error) {
             if (error instanceof Error && error.name === 'TimeoutError') {
                 this.logger.warn({ isTimeout: true });
-                return { isAvailable: null };
+                return { isAvailable: null, isCloudflareTriggered: null };
             }
 
             this.logger.error(error);
@@ -49,14 +45,16 @@ export class ZerionApiClient {
             await context.browser()?.close();
         }
 
-        return { isAvailable: false };
+        return { isAvailable: false, isCloudflareTriggered: false };
     }
 
     private async getContext() {
-        return await firefox.launch({ headless: false }).then((browser) => browser.newContext());
-    }
+        const isCloudflareBypassOn = process.env.CLOUDFLARE === 'true';
 
-    private async getCloudflareProtectedContext() {
+        if (!isCloudflareBypassOn) {
+            return await firefox.launch({ headless: false }).then((browser) => browser.newContext());
+        }
+
         // TODO: adjust the protection to be accepted by cloudflare
         const browser = await firefox.launch({ headless: false });
         const context = await browser.newContext({
@@ -81,5 +79,13 @@ export class ZerionApiClient {
         });
 
         return context;
+    }
+
+    private async cloudflareDelay(page: Page) {
+        const isCloudflareBypassOn = process.env.CLOUDFLARE === 'true';
+
+        if (isCloudflareBypassOn) {
+            await page.waitForTimeout(random(1000, 3000));
+        }
     }
 }
