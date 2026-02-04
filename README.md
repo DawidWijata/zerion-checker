@@ -5,10 +5,11 @@ Checker bot logs the result to MongoDB and can be used to monitor the availabili
 
 ## Demo
 [Grafana dashboard](https://dawidwijata.grafana.net/public-dashboards/33f6857740d14c6e968cc7ced132e507)
+
 For now, it displays only the static data from a specific period - just to demonstrate the functionality.
 
 ## Status
-For now, the project is abandoned since bypassing the Cloudflare protection relies heavily on rotating the proxy pool, which is currently outside my budget scope. This project seems to be working, but only for a few hours after deploy, before it is being detected by Cloudflare as a bot and doomed.
+**For now, the project is abandoned** since bypassing the Cloudflare protection relies heavily on rotating the proxy pool, which is currently outside my budget scope. This project seems to be working, but only for a few hours after deploy, before it is being detected by Cloudflare as a bot and doomed.
 
 Although this bot has a basic Cloudflare bypass implemented, but it still requires a big enough proxy pool to work.
 
