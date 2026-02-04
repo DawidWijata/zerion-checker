@@ -1,6 +1,6 @@
 import { firefox } from "playwright";
 import type { Logger } from "pino";
-import { randomDelay } from "./utils.ts";
+import { random } from "./utils.ts";
 
 export class ZerionApiClient {
     private link: string;
@@ -12,7 +12,11 @@ export class ZerionApiClient {
     }
 
     public async checkAvailability(): Promise<Record<string, unknown>> {
-        const context = await this.getContext();
+        const isCloudflareBypassOn = process.env.CLOUDFLARE === 'true';
+        const context = isCloudflareBypassOn
+            ? await this.getCloudflareProtectedContext()
+            : await this.getContext();
+
         const page = await context.newPage();
 
         try {
@@ -20,12 +24,14 @@ export class ZerionApiClient {
                 waitUntil: 'domcontentloaded',
             });
 
-            await page.waitForTimeout(randomDelay(1000, 3000));
+            if (isCloudflareBypassOn) {
+                await page.waitForTimeout(random(1000, 3000));
+            }
 
             const button = page.getByText('Oglądaj').nth(1);
             await button.click();
 
-            await page.waitForSelector('.player-plimit');
+            await page.waitForTimeout(random(2000, 4000));
 
             const isVideoAvailable = await page
                 .locator('.player-plimit', { hasText: 'Wykup premium, aby uzyskać dostęp!' })
@@ -47,6 +53,11 @@ export class ZerionApiClient {
     }
 
     private async getContext() {
+        return await firefox.launch({ headless: false }).then((browser) => browser.newContext());
+    }
+
+    private async getCloudflareProtectedContext() {
+        // TODO: adjust the protection to be accepted by cloudflare
         const browser = await firefox.launch({ headless: false });
         const context = await browser.newContext({
             viewport: {

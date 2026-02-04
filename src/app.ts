@@ -5,10 +5,12 @@ import * as Utils from './utils.ts';
 const MINUTE = 60_000;
 
 const api = new ZerionApiClient(process.env.ZERION_CHECK_LINK!, Logger);
-const delay = Utils.randomDelay(1 * MINUTE, 5 * MINUTE);
+const delay = Utils.random(1 * MINUTE, 5 * MINUTE);
 
-if (process.env.ENVIRONMENT === 'production') {
-    Logger.trace(`Waiting for ${delay}ms`);
+if (process.env.CLOUDFLARE === 'true') {
+    Logger.trace(`Cloudflare bypass is enabled`);
+    Logger.trace(`Waiting for ${delay}ms of random delay`);
+
     await new Promise(resolve => setTimeout(resolve, delay));
 }
 
