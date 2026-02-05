@@ -1,4 +1,4 @@
-# Zerion Checker PoC
+# Zerion Checker
 Zerion Checker is a simple tool that checks if a Zerion (https://zerion.cc) media website is currently blocked for non-premium users. The tool was meant to help in planning movie dates with my wife :smile:
 
 Checker bot logs the result to MongoDB and can be used to monitor the availability of a website, e.g. with a Grafana dashboard. You can customize the sample rate simply by setting a CRON job in your production environment.
@@ -21,7 +21,6 @@ You can run the project with either local settings, or with docker-compose.
 - Your own MongoDB instance if you want to use it instead of the one provided by docker-compose
 
 ### Local environment
-[!NOTE]
 For quicker setup, it is recommended to use docker-compose: `docker-compose up -d`.
 
 1. Install dependencies: `npm install`
