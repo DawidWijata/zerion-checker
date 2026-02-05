@@ -1,23 +1,10 @@
 # Zerion Checker PoC
-
-[!CAUTION]
-**For now, the project is abandoned**
-
 Zerion Checker is a simple tool that checks if a Zerion (https://zerion.cc) media website is currently blocked for non-premium users. The tool was meant to help in planning movie dates with my wife :smile:
 
 Checker bot logs the result to MongoDB and can be used to monitor the availability of a website, e.g. with a Grafana dashboard. You can customize the sample rate simply by setting a CRON job in your production environment.
 
 ## Demo
 [Grafana dashboard](https://dawidwijata.grafana.net/public-dashboards/33f6857740d14c6e968cc7ced132e507)
-
-For now, it displays only the static data from a specific period - just to demonstrate the functionality.
-
-## Status
-**For now, the project is abandoned** since bypassing the Cloudflare protection relies heavily on rotating the proxy pool, which is currently outside my budget scope. This project seems to be working, but only for a few hours after deploy, before it is being detected by Cloudflare as a bot and doomed.
-
-Although this bot has a basic Cloudflare bypass implemented, but it still requires a big enough proxy pool to work.
-
-From the basic tests run by this bot, the service is usually closed from 5 PM to 9-10 PM (CET timezone) every day.
 
 ## Features
 - Structured logging
