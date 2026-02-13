@@ -9,6 +9,7 @@ Zerion Checker is a simple tool that checks if a Zerion (<https://zerion.cc>) me
 ## High Level Design
 
 An app marked green in the diagram below is a part of this repo. The rest is a cloud infrastructure that needs to be set up separately.
+
 ![High Level Design](docs/hld.png)
 
 ## Features
