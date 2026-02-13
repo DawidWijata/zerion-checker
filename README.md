@@ -1,6 +1,6 @@
 # Zerion Checker
 
-Zerion Checker is a simple tool that checks if a Zerion (<https://zerion.cc>) media website is currently blocked for non-premium users. The tool was meant to help in planning movie dates with my wife :smile:. From the data collected from the Checker App, we can see that the website is blocked for non-premium users mostly from 5 PM to 10 PM every day.
+Zerion Checker is a simple tool that checks if a Zerion (<https://zerion.cc>) media website is currently blocked for non-premium users. The tool was meant to help in planning movie dates with my wife :smile:. From the data collected from the Checker App, we can see that the website is blocked for non-premium users mostly from 5 PM to 10 PM (CET) every day.
 
 ![Zerion availability](docs/availability.png).
 
